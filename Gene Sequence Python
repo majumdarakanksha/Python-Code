@@ -1,0 +1,233 @@
+import numpy as np
+
+TerB_Kpneu = 'TTGGCTGGGGGTTTCGCTGGT'
+#CCAGAGGTTCCAAATAAACGCAATGATGAGGGTATGAGAATGAGTTTTTTCGACAAAGTCAAAGGGGCTTTGACCTCGGGTCGTGAGGAATTGACCCGCCAGGTAGGCCGTTACAAAAACAAGAAATTTATGCAGGGTACCGTCGCGGTATGCGCCCGTATCGCTGTTGCCAGTGACGGCGTTAGCTCCGAAGAAAAACAGAAGATGATTGGATTTCTGCGATCCTCAGAAGAGCTGAAAGTCTTCGATACAGCAGAAGTTATCGAATTTTTTAACAAGCTGGTGACCAGTTTCGACTTTGATCTGGAAATCGGAAAAGGCGAAACGATGAAATATATCCTCGCCCTGAAAGACCAGCCAGAGGCAGCTCAACTGGCTCTTCGTGTCGGTATTGCTGTCGCTAAAAGTGATGGCAACTTCGATGATGATGAGAAGAGTGCTGTCCGTGAAATTGCCCGTTCGCTGGGTTTCGACCCGGCTGAATTTGGCCTCTGA'
+
+print('Sequence of interest:', TerB_Kpneu)
+
+print()
+
+def frequency_string(string):
+  mydict = {}
+  for word in string:
+    if word in mydict:
+      mydict[word] += 1
+    else:
+      mydict[word] = 1
+  
+  return mydict
+
+print('Frequencey of nucleotides:', frequency_string(TerB_Kpneu))
+
+print()
+
+def dnatorna(string):
+  rna = ''
+  for letter in string:
+    if letter == 'T':
+      rna += 'U'
+    else:
+      rna += letter
+  return rna
+
+print ('RNA sequence:', dnatorna(TerB_Kpneu))
+
+def revcomp(string):
+  revstring = string[::-1] 
+  revcompstring = ''
+  for letter in revstring:
+    if letter == 'A':
+      revcompstring += 'T'
+    elif letter == 'C':
+      revcompstring += 'G'
+    elif letter == 'G':
+      revcompstring += 'C'
+    elif letter == 'T':
+      revcompstring += 'A'
+
+  return revcompstring
+
+print()
+
+print ('Reverse complement sequence:', revcomp(TerB_Kpneu))
+
+print()
+
+def gccont(string):
+  cgcount = 0
+  for letter in string:
+    if letter == 'C':
+      cgcount += 1
+    elif letter == 'G':
+      cgcount += 1
+  
+  return (cgcount)
+
+print('GC Content(%) :', ((gccont(TerB_Kpneu))/(len(TerB_Kpneu))))
+
+print()
+
+stringone = 'GAGCCTACTAACGGGAT'
+stringtwo = 'CATCGTAATGACGGCCT'
+
+def hamming(stringone, stringtwo):
+  counter = 0
+  for i in (range(len(stringone))):
+    if stringone[i] != stringtwo[i]:
+      counter += 1
+    else:
+      counter = counter
+
+  return(counter)
+
+print('Hamming Distance :', hamming(stringone, stringtwo))
+
+print()
+
+aatable = table = {'ATA':'I', 'ATC':'I', 'ATT':'I', 'ATG':'M','ACA':'T', 'ACC':'T', 'ACG':'T', 'ACT':'T','AAC':'N', 'AAT':'N', 'AAA':'K', 'AAG':'K','AGC':'S', 'AGT':'S', 'AGA':'R', 'AGG':'R','CTA':'L', 'CTC':'L', 'CTG':'L', 'CTT':'L','CCA':'P', 'CCC':'P', 'CCG':'P', 'CCT':'P','CAC':'H', 'CAT':'H', 'CAA':'Q', 'CAG':'Q','CGA':'R', 'CGC':'R', 'CGG':'R', 'CGT':'R','GTA':'V', 'GTC':'V', 'GTG':'V', 'GTT':'V','GCA':'A', 'GCC':'A', 'GCG':'A', 'GCT':'A','GAC':'D', 'GAT':'D', 'GAA':'E', 'GAG':'E','GGA':'G', 'GGC':'G', 'GGG':'G', 'GGT':'G','TCA':'S', 'TCC':'S', 'TCG':'S', 'TCT':'S','TTC':'F', 'TTT':'F', 'TTA':'L', 'TTG':'L','TAC':'Y', 'TAT':'Y', 'TAA':'','TAG':'','TGC':'C', 'TGT':'C', 'TGA':'','TGG':'W'}
+
+
+def genetoprotein(string):
+  protein = ''
+  for i in range(0, len(string), 3):
+    codon = string[i:i+3]
+    protein += aatable[codon]
+
+  return protein
+
+print('Protein Sequence:', genetoprotein(TerB_Kpneu))
+
+print()
+
+stringthree = 'GATATATGCATATACTT'
+seq = 'ATAT'
+
+def motif(string, seq):
+  count = 0
+  position = []
+  for i in range(len(string)-4):
+    if string[i:i+4] == seq:
+      count += 1
+      position = position + [i]
+    
+  return (count,position)
+
+print('Motif number and position:',motif(stringthree, seq))
+
+strings = ['ATCCAGCT','GGGCAACT','ATGGATCT','AAGCAACC','TTGGAACT','ATGCCATT','ATGGCACT']
+
+print()
+
+def consensus(matrix):
+  A,G,C,T = [],[],[],[]
+  
+  for i in range(len(matrix[0])): 
+    a,g,c,t = 0,0,0,0
+    
+    for j in (range(len(matrix))):
+      #print(range(len(matrix[i])))
+      if matrix[j][i] == 'A':
+        a += 1
+      elif matrix[j][i] == 'G':
+        g += 1  
+      elif matrix[j][i] == 'C':
+        c += 1
+      elif matrix[j][i] == 'T':
+        t += 1 
+    
+    A = A + [a]  
+    G = G + [g]
+    C = C + [c]
+    T = T + [t]
+    
+  new_matrix = np.array([A,G,C,T])
+  
+  #print(new_matrix) 
+  
+  transposed_matrix = new_matrix.transpose()
+  #print(transposed_matrix)
+
+  consensus = ''
+
+  for i in range(len(transposed_matrix)):
+    if transposed_matrix[i][0] == max(transposed_matrix[i]):
+      consensus += 'A'
+
+    elif transposed_matrix[i][1] == max(transposed_matrix[i]):
+      consensus += 'G'
+
+    elif transposed_matrix[i][2] == max(transposed_matrix[i]):
+      consensus += 'C'
+
+    elif transposed_matrix[i][3] == max(transposed_matrix[i]):
+      consensus += 'T'    
+
+  print('Consensus sequence', consensus) 
+  return('A:',A, 'G:', G, 'C:', C, 'T:', T)
+
+print(consensus(strings))
+
+#global alignment code - work in progress
+
+alignone = 'AAG'
+aligntwo = 'AG'
+
+def initializetable(a1,a2):
+  inttable = []
+  
+  for i in range(len(a1)+1):
+    inttable = inttable + [[0]*(len(a2)+1)]
+  
+  return inttable
+
+def reverse(sequence):
+    rev = sequence[::-1]
+    return rev
+#print(initializetable(alignone, aligntwo))
+
+def globalaling(align1,align2,indel,point):
+  table = initializetable(align1,align2)
+  backtrack = initializetable(align1,align2)
+  #print(backtrack)
+  
+  lenalign1 = (len(align1)+1)
+  lenalign2 = (len(align2)+1)
+  for i in range(lenalign1):
+    for j in range(lenalign2):
+      if i == 0:
+        if j == 0:
+          table[i][j] = 0
+        elif j!= 0:
+          table[i][j] = table[i][j-1] + indel
+          backtrack[i][j] = 'e'
+      elif i != 0:
+        if j == 0:
+          table [i][j] = table[i-1][j] + indel
+          backtrack[i][j] = 's'
+        
+        elif j!= 0:
+          if align1[i-1] == align2[j-1]:
+            table[i][j] = max((table[i-1][j-1]+point),(table[i][j-1]+ indel),(table[i-1][j]+indel))
+            if table[i][j] == table[i][j-1] + indel:
+              backtrack[i][j] = 'e'
+            elif table[i][j] == table[i-1][j] + indel:
+              backtrack[i][j] = 's'
+            elif table[i][j] == table[i-1][j-1] + point:
+              backtrack[i][j] = 'd'
+          
+          elif align1[i-1] != align2[j-1]:
+            table[i][j] = max((table[i-1][j-1]+point), (table[i][j-1]+indel),(table[i-1][j]+indel))
+            if table[i][j] == table[i][j-1]+indel:
+              backtrack[i][j] = 'e'
+            elif table[i][j] == table[i-1][j]+indel:
+              backtrack[i][j] = 's'
+            elif table[i][j] == table[i-1][j-1] + point:
+              backtrack[i][j] = 'd'
+  
+  print(table)
+  print()
+  print(backtrack)
+  
+  return
+  
+  
