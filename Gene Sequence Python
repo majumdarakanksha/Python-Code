@@ -1,12 +1,13 @@
 import numpy as np
 
-TerB_Kpneu = 'TTGGCTGGGGGTTTCGCTGGT'
-#CCAGAGGTTCCAAATAAACGCAATGATGAGGGTATGAGAATGAGTTTTTTCGACAAAGTCAAAGGGGCTTTGACCTCGGGTCGTGAGGAATTGACCCGCCAGGTAGGCCGTTACAAAAACAAGAAATTTATGCAGGGTACCGTCGCGGTATGCGCCCGTATCGCTGTTGCCAGTGACGGCGTTAGCTCCGAAGAAAAACAGAAGATGATTGGATTTCTGCGATCCTCAGAAGAGCTGAAAGTCTTCGATACAGCAGAAGTTATCGAATTTTTTAACAAGCTGGTGACCAGTTTCGACTTTGATCTGGAAATCGGAAAAGGCGAAACGATGAAATATATCCTCGCCCTGAAAGACCAGCCAGAGGCAGCTCAACTGGCTCTTCGTGTCGGTATTGCTGTCGCTAAAAGTGATGGCAACTTCGATGATGATGAGAAGAGTGCTGTCCGTGAAATTGCCCGTTCGCTGGGTTTCGACCCGGCTGAATTTGGCCTCTGA'
+
+TerB_Kpneu = 'TTGGCTGGGGGTTTCGCTGGTCCAGAGGTTCCAAATAAACGCAATGATGAGGGTATGAGAATGAGTTTTTTCGACAAAGTCAAAGGGGCTTTGACCTCGGGTCGTGAGGAATTGACCCGCCAGGTAGGCCGTTACAAAAACAAGAAATTTATGCAGGGTACCGTCGCGGTATGCGCCCGTATCGCTGTTGCCAGTGACGGCGTTAGCTCCGAAGAAAAACAGAAGATGATTGGATTTCTGCGATCCTCAGAAGAGCTGAAAGTCTTCGATACAGCAGAAGTTATCGAATTTTTTAACAAGCTGGTGACCAGTTTCGACTTTGATCTGGAAATCGGAAAAGGCGAAACGATGAAATATATCCTCGCCCTGAAAGACCAGCCAGAGGCAGCTCAACTGGCTCTTCGTGTCGGTATTGCTGTCGCTAAAAGTGATGGCAACTTCGATGATGATGAGAAGAGTGCTGTCCGTGAAATTGCCCGTTCGCTGGGTTTCGACCCGGCTGAATTTGGCCTCTGA'
 
 print('Sequence of interest:', TerB_Kpneu)
 
 print()
 
+#Finding frequency of neucleotides in DNA segment
 def frequency_string(string):
   mydict = {}
   for word in string:
@@ -21,6 +22,7 @@ print('Frequencey of nucleotides:', frequency_string(TerB_Kpneu))
 
 print()
 
+#Converting DNA to RNA
 def dnatorna(string):
   rna = ''
   for letter in string:
@@ -32,6 +34,7 @@ def dnatorna(string):
 
 print ('RNA sequence:', dnatorna(TerB_Kpneu))
 
+#Producing the reverse complement of a DNA segment
 def revcomp(string):
   revstring = string[::-1] 
   revcompstring = ''
@@ -53,6 +56,7 @@ print ('Reverse complement sequence:', revcomp(TerB_Kpneu))
 
 print()
 
+#Finding out GC content
 def gccont(string):
   cgcount = 0
   for letter in string:
@@ -67,6 +71,7 @@ print('GC Content(%) :', ((gccont(TerB_Kpneu))/(len(TerB_Kpneu))))
 
 print()
 
+#Finding the hamming distance- Difference in neucleotides from two different DNA segments 
 stringone = 'GAGCCTACTAACGGGAT'
 stringtwo = 'CATCGTAATGACGGCCT'
 
@@ -84,6 +89,7 @@ print('Hamming Distance :', hamming(stringone, stringtwo))
 
 print()
 
+#Finding out protein sequence based on neucleotide sequence
 aatable = table = {'ATA':'I', 'ATC':'I', 'ATT':'I', 'ATG':'M','ACA':'T', 'ACC':'T', 'ACG':'T', 'ACT':'T','AAC':'N', 'AAT':'N', 'AAA':'K', 'AAG':'K','AGC':'S', 'AGT':'S', 'AGA':'R', 'AGG':'R','CTA':'L', 'CTC':'L', 'CTG':'L', 'CTT':'L','CCA':'P', 'CCC':'P', 'CCG':'P', 'CCT':'P','CAC':'H', 'CAT':'H', 'CAA':'Q', 'CAG':'Q','CGA':'R', 'CGC':'R', 'CGG':'R', 'CGT':'R','GTA':'V', 'GTC':'V', 'GTG':'V', 'GTT':'V','GCA':'A', 'GCC':'A', 'GCG':'A', 'GCT':'A','GAC':'D', 'GAT':'D', 'GAA':'E', 'GAG':'E','GGA':'G', 'GGC':'G', 'GGG':'G', 'GGT':'G','TCA':'S', 'TCC':'S', 'TCG':'S', 'TCT':'S','TTC':'F', 'TTT':'F', 'TTA':'L', 'TTG':'L','TAC':'Y', 'TAT':'Y', 'TAA':'','TAG':'','TGC':'C', 'TGT':'C', 'TGA':'','TGG':'W'}
 
 
@@ -99,6 +105,7 @@ print('Protein Sequence:', genetoprotein(TerB_Kpneu))
 
 print()
 
+#Identifying motif and position that it occurs
 stringthree = 'GATATATGCATATACTT'
 seq = 'ATAT'
 
@@ -114,9 +121,10 @@ def motif(string, seq):
 
 print('Motif number and position:',motif(stringthree, seq))
 
-strings = ['ATCCAGCT','GGGCAACT','ATGGATCT','AAGCAACC','TTGGAACT','ATGCCATT','ATGGCACT']
-
 print()
+
+#Identifying consensus sequence and table of most frequent neucleotide at each position of the DNA segment
+strings = ['ATCCAGCT','GGGCAACT','ATGGATCT','AAGCAACC','TTGGAACT','ATGCCATT','ATGGCACT']
 
 def consensus(matrix):
   A,G,C,T = [],[],[],[]
@@ -172,6 +180,7 @@ print(consensus(strings))
 alignone = 'AAG'
 aligntwo = 'AG'
 
+'''created table code for original and backtrack table'''
 def initializetable(a1,a2):
   inttable = []
   
@@ -179,14 +188,12 @@ def initializetable(a1,a2):
     inttable = inttable + [[0]*(len(a2)+1)]
   
   return inttable
+  
+'''Global alignmnet code - first make table with scores based on indel, then make backtrack matrix to determine which direction in the matrix to move (d,s,e). 
+Based on backtrack code the segments should align''' 
 
-def reverse(sequence):
-    rev = sequence[::-1]
-    return rev
-#print(initializetable(alignone, aligntwo))
-
-def globalaling(align1,align2,indel,point):
-  table = initializetable(align1,align2)
+def globalaling(align1,align2,penalty,point):
+  ntable = initializetable(align1,align2)
   backtrack = initializetable(align1,align2)
   #print(backtrack)
   
@@ -196,37 +203,64 @@ def globalaling(align1,align2,indel,point):
     for j in range(lenalign2):
       if i == 0:
         if j == 0:
-          table[i][j] = 0
+          ntable[i][j] = 0
         elif j!= 0:
-          table[i][j] = table[i][j-1] + indel
+          ntable[i][j] = ntable[i][j-1] + penalty
           backtrack[i][j] = 'e'
       elif i != 0:
         if j == 0:
-          table [i][j] = table[i-1][j] + indel
+          ntable [i][j] = ntable[i-1][j] + penalty
           backtrack[i][j] = 's'
         
         elif j!= 0:
           if align1[i-1] == align2[j-1]:
-            table[i][j] = max((table[i-1][j-1]+point),(table[i][j-1]+ indel),(table[i-1][j]+indel))
-            if table[i][j] == table[i][j-1] + indel:
+            ntable[i][j] = max((ntable[i-1][j-1]+point),(ntable[i][j-1]+ penalty),(ntable[i-1][j]+penalty))
+            if ntable[i][j] == ntable[i][j-1] + penalty:
               backtrack[i][j] = 'e'
-            elif table[i][j] == table[i-1][j] + indel:
+            elif ntable[i][j] == ntable[i-1][j] + penalty:
               backtrack[i][j] = 's'
-            elif table[i][j] == table[i-1][j-1] + point:
+            elif ntable[i][j] == ntable[i-1][j-1] + point:
               backtrack[i][j] = 'd'
           
           elif align1[i-1] != align2[j-1]:
-            table[i][j] = max((table[i-1][j-1]+point), (table[i][j-1]+indel),(table[i-1][j]+indel))
-            if table[i][j] == table[i][j-1]+indel:
+            ntable[i][j] = max((ntable[i-1][j-1]+penalty), (ntable[i][j-1]+penalty),(ntable[i-1][j]+penalty))
+            if ntable[i][j] == ntable[i][j-1]+penalty:
               backtrack[i][j] = 'e'
-            elif table[i][j] == table[i-1][j]+indel:
+            elif ntable[i][j] == ntable[i-1][j]+penalty:
               backtrack[i][j] = 's'
-            elif table[i][j] == table[i-1][j-1] + point:
+            elif ntable[i][j] == ntable[i-1][j-1] + penalty:
               backtrack[i][j] = 'd'
   
-  print(table)
+  
+  new_align1 = ''
+  new_align2 = ''
+  i = len(align1)
+  j = len(align2)
+  
   print()
-  print(backtrack)
+  while i > 0 or j > 0:
+    if backtrack[i][j] == 'e':
+      new_align1 += '-'
+      new_align2 += align2[j - 1]
+      j = j - 1
+    elif backtrack[i][j] == 's':
+      new_align1 += align1[i-1]
+      new_align2 +=  '-'
+      i = i - 1
+    elif backtrack[i][j] == 'd':
+      new_align1 += align1[i - 1]
+      new_align2 += align2[j - 1]
+      i = i - 1
+      j = j - 1
+    
+
+  #print(new_align1," " ,new_align2)
+  new_align1 = reverse(new_align1)
+  new_align2 = reverse(new_align2)      
+
+  return (new_align1, new_align2)
+
+print(globalaling(alignone,aligntwo,-1,1))
   
   return
   
