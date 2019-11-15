@@ -1,2 +1,4 @@
 # Python-Code
-The code file contains code that solves various computational biology problems on ROSLIND
+The code file contains code that solves various computational biology problems on ROSLIND. 
+The codes written focus on going through a DNA sequence, counting the number of nucleotides, converting a DNA sequence to an RNA sequence, making a reverse complement sequence and producing a protein sequence based on the DNA sequence. There are also codes written for comparing DNA sequences. These include finding the number of different neucleotides and their position in both the DNA sequences, finding a consensus sequence from a list of sequences and aligning two sequences. 
+By coding to accomplish these tasks I have learned how to successfuly use for loops, in a string and a matrix, as well as use while loops. I have also learned how to manipulate DNA strings and arrays that are needed to make a consensus sequence or an alignment. I plan on further developing these skills to futher assess DNA and protein sequences, and develop the foundational skills necessary to implement python to biochemical research questions. 
