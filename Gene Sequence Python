@@ -189,8 +189,9 @@ def initializetable(a1,a2):
   
   return inttable
   
-'''Global alignmnet code - first make table with scores based on indel, then make backtrack matrix to determine which direction in the matrix to move (d,s,e). 
-Based on backtrack code the segments should align''' 
+'''Global alignmnet code. Based one the Smith-Waterman Algorithm.
+First make table with scores based on indel, then make backtrack matrix to determine which direction in the matrix to move (d,s,e). 
+Based on backtrack code the segments should align with '-' for spaces that do not align''' 
 
 def globalaling(align1,align2,penalty,point):
   ntable = initializetable(align1,align2)
