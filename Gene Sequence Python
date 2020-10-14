@@ -175,7 +175,7 @@ def consensus(matrix):
 
 print(consensus(strings))
 
-#global alignment code - work in progress
+#global alignment code 
 
 alignone = 'AAG'
 aligntwo = 'AG'
